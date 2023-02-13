@@ -37,7 +37,7 @@ jobs:
         ls target
     - name: Publish test results
       uses: actions/upload-artifact@v1
-      if: always()
+      if: -f target/surefire-reports/TEST-*.xml
       with:
         name: test-results
         path: target/surefire-reports
