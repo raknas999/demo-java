@@ -29,3 +29,20 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: mvn -B package --file pom.xml
+    - name: Publish test results
+      run: |
+        if [ -d target/surefire-reports ]; then
+          echo "Directory target/surefire-reports found. Uploading test results as an artifact."
+          echo ::set-output name=continue::true
+        else
+          echo "Directory target/surefire-reports not found. Skipping artifact upload."
+          echo ::set-output name=continue::false
+        fi
+      id: upload_artifact
+
+    - name: Conditionally upload artifact
+      if: steps.upload_artifact.outputs.continue == 'true'
+      uses: actions/upload-artifact@v1
+      with:
+        name: test-results
+        path: target/surefire-reports
