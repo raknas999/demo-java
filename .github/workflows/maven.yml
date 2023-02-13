@@ -31,7 +31,7 @@ jobs:
       run: mvn -B package --file pom.xml
     - name: Publish test results
       uses: actions/upload-artifact@v1
+      if: always()
       with:
         name: test-results
-        path: target/surefire-reports   
-      
+        path: target/surefire-reports
